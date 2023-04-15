@@ -11,6 +11,13 @@ let server = http.createServer(app);
 
 let io = socketIO(server);
 
-app.listen(8080, () => {
+io.on("connection", (socket) => {
+  console.log("A new user connected now");
+  socket.on("disconnect", () => {
+    console.log("The new user is disconnected");
+  });
+});
+
+server.listen(8000, () => {
   console.log("Server running on port 8080");
 });
