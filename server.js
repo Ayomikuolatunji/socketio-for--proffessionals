@@ -13,6 +13,24 @@ let io = socketIO(server);
 
 io.on("connection", (socket) => {
   console.log("A new user connected now");
+
+  socket.emit("newMessage", {
+    text: "Message from the admin",
+    from: "admin",
+  });
+  socket.broadcast.emit("newMessage", {
+    text: "A new user joined",
+    from: "admin",
+  });
+  // logics
+  socket.on("createMessage", (params) => {
+    socket.broadcast.emit("newMessage", {
+      from: params.from,
+      to: params.to,
+    });
+    console.log(params);
+  });
+
   socket.on("disconnect", () => {
     console.log("The new user is disconnected");
   });
